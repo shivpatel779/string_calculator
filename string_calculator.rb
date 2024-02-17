@@ -2,7 +2,7 @@ require 'minitest/autorun'
 def add(numbers)
   return 0 if numbers.empty?
   # numbers_list = numbers.split(/[\n,]/)
-
+  negatives = []
   delimiter = ","
   if numbers.start_with?("//")
     delimiter = numbers[2]
@@ -12,7 +12,15 @@ def add(numbers)
   numbers_list = numbers.split(/[\n#{delimiter}]/)
   sum = 0
   numbers_list.each do |num|
-    sum += num.to_i
+    n = num.to_i
+    if n < 0
+      negatives << n
+    else
+      sum += n
+    end
+  end
+  if negatives.any?
+    raise "Negative numbers not allowed: #{negatives.join(', ')}"
   end
   sum
 end
@@ -40,5 +48,9 @@ class TestStringCalculator < Minitest::Test
 
   def test_delimiter_numbers
     assert_equal(6, add("//;\n1;2;3"))
+  end
+
+  def test_negative_number
+    assert_raises(RuntimeError) {add("1,-2,-3,1")}
   end
 end
