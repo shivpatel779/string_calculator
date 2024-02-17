@@ -21,4 +21,8 @@ class TestStringCalculator < Minitest::Test
   def test_two_numbers
     assert_equal(3, add("1,2"))
   end
+
+  def test_more_then_two_numbers
+    assert_equal(19, add("1,2,9,7"))
+  end
 end
