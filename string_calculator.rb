@@ -1,7 +1,15 @@
 require 'minitest/autorun'
 def add(numbers)
   return 0 if numbers.empty?
-  numbers_list = numbers.split(/[\n,]/)
+  # numbers_list = numbers.split(/[\n,]/)
+
+  delimiter = ","
+  if numbers.start_with?("//")
+    delimiter = numbers[2]
+    numbers = numbers[4..-1]
+  end
+
+  numbers_list = numbers.split(/[\n#{delimiter}]/)
   sum = 0
   numbers_list.each do |num|
     sum += num.to_i
@@ -26,7 +34,11 @@ class TestStringCalculator < Minitest::Test
     assert_equal(19, add("1,2,9,7"))
   end
 
-  def  handle_new_lines_between_numbers
+  def test_new_lines_between_numbers
     assert_equal(14, add("1\n4,9"))
+  end
+
+  def test_delimiter_numbers
+    assert_equal(6, add("//;\n1;2;3"))
   end
 end
